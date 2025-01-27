@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DbConfigService } from './config/db.config.service';
+import { DbConfigService } from './infra/config/db.config.service';
 import { ConfigModule } from '@nestjs/config';
+import { AccountModule } from './account/account.module';
+import { TransferModule } from './transfer/transfer.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({
+  imports: [
+    AccountModule,
+    TransferModule,
+    ConfigModule.forRoot({
     isGlobal: true,
     envFilePath: '.env'
   }),
