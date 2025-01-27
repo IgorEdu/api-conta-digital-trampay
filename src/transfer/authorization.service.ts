@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateTransferDto } from './dto/create-transfer.dto';
+import { CreateExternalTransferDto } from 'src/external-transfer/dto/create-external-transfer.dto';
 
 interface AuthorizationResponse {
   status: string;
@@ -13,7 +14,7 @@ interface AuthorizationResponse {
 export class AuthorizationService {
   private readonly logger = new Logger(AuthorizationService.name);
 
-  async authorize(dto: CreateTransferDto): Promise<boolean> {
+  async authorize(dto: CreateTransferDto | CreateExternalTransferDto): Promise<boolean> {
     const url = 'https://util.devi.tools/api/v2/authorize';
 
     try {
