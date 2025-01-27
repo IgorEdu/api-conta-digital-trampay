@@ -2,7 +2,7 @@ import { DataSource, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { CreateTransferDto } from './dto/create-transfer.dto';
 import { Transfer } from './transfer.entity';
-import { AccountService } from 'src/account/account.service';
+import { AccountService } from '../account/account.service';
 
 @Injectable()
 export class TransferRepository {
