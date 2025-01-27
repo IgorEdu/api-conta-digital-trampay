@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateAccountDto } from './dto/create-account.dto';
-
 import { EntityManager } from 'typeorm';
 import { AccountRepository } from './account.repository';
 import { Account } from './account.entity';
@@ -9,9 +8,9 @@ import { Account } from './account.entity';
 export class AccountService {
   constructor(private readonly accountRepository: AccountRepository) {}
 
-  async getAccount(accountId: string): Promise<Account | null> {
+  async getAccount(identifier: string): Promise<Account | null> {
     return this.accountRepository.findOne({
-      where: { id: accountId },
+      where: [{ id: identifier }, {userId: identifier}]
     });
   }
 
@@ -68,17 +67,25 @@ export class AccountService {
       throw new BadRequestException('Saldo insuficiente');
     }
 
-    account.balance -= amount;
+    account.balance = Number(account.balance) - amount;
     await this.updateAccount(account, manager);
   }
 
   async credit(accountId: string, amount: number, manager?: EntityManager) {
+    // const account = await this.getAccount(accountId);
+    // if (!account) {
+    //   throw new BadRequestException('Conta não encontrada');
+    // }
+    
+    // account.balance += amount;
+    // await this.updateAccount(account, manager);
+
     const account = await this.getAccount(accountId);
     if (!account) {
       throw new BadRequestException('Conta não encontrada');
     }
 
-    account.balance += amount;
+    account.balance = Number(account.balance) + amount;
     await this.updateAccount(account, manager);
   }
 } 
