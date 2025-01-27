@@ -13,7 +13,7 @@ export class DbConfigService implements TypeOrmOptionsFactory{
             username: this.configService.get<string>('DATABASE_USER'),
             password: this.configService.get<string>('DATABASE_PASSWORD'),
             database: this.configService.get<string>('DATABASE_NAME'),
-            entities: [__dirname + '/../**/*.entity{.js,.ts}']
+            entities: [__dirname + '/../../**/*.entity{.js,.ts}']
         }
     }
 

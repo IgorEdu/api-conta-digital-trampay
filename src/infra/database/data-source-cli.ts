@@ -7,15 +7,14 @@ const dataSourceOptions: DataSourceOptions = {
   port: Number(process.env.DATABASE_PORT),
   username: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
-  database: process.env.DATABASE_DB,
+  database: process.env.DATABASE_NAME,
   synchronize: false,
   dropSchema: false,
   logging: false,
   logger: 'file',
   entities: ['dist/**/*.entity{.ts,.js}'],
-  migrations: ['src/database/migrations/**/*.ts'],
-  subscribers: ['src/subscriber/**/*.ts'],
-  migrationsTableName: 'migration_table'
+  migrations: ['src/infra/database/migrations/**/*.ts'],
+  subscribers: ['src/infra/subscriber/**/*.ts']
 };
 
 const dataSource = new DataSource(dataSourceOptions);
