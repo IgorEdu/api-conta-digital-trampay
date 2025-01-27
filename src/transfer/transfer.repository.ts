@@ -21,6 +21,7 @@ export class TransferRepository {
       transfer.accountSender = dto.accountSender;
       transfer.accountReceiver = dto.accountReceiver;
       transfer.amount = Number(dto.amount);
+      transfer.status = 'completed';
 
       // Perform the debit and credit operations within the transaction
       await this.accountService.debit(
@@ -36,16 +37,13 @@ export class TransferRepository {
 
       await queryRunner.manager.save(transfer);
 
-      // Commit the transaction
       await queryRunner.commitTransaction();
 
       return true;
     } catch (error) {
-      // Rollback the transaction in case of an error
       await queryRunner.rollbackTransaction();
       return false;
     } finally {
-      // Release the query runner
       await queryRunner.release();
     }
   }

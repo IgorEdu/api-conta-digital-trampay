@@ -14,6 +14,10 @@ export class Transfer {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   amount: number;
 
+  @Column({ name: 'status'})
+  status: string;
+
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
-  date?: Date;
+  created_at?: Date;
+
 }
