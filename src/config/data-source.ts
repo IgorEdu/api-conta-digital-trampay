@@ -13,8 +13,8 @@ const dataSourceOptions: DataSourceOptions = {
   logging: false,
   logger: 'file',
   entities: ['dist/**/*.entity{.ts,.js}'],
-  migrations: ['src/infra/database/migrations/**/*.ts'],
-  subscribers: ['src/infra/subscriber/**/*.ts']
+  migrations: ['src/migrations/**/*.ts'],
+  subscribers: ['src/subscriber/**/*.ts']
 };
 
 const dataSource = new DataSource(dataSourceOptions);
