@@ -2,7 +2,7 @@ import { DataSource } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { AccountService } from '../account/account.service';
 import { CreateExternalTransferDto } from './dto/create-external-transfer.dto';
-import { ExternalTransfer } from './external-transfer.entity';
+import { ExternalTransfer } from './entities/external-transfer.entity';
 
 @Injectable()
 export class ExternalTransferRepository {

@@ -1,7 +1,7 @@
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateExternalTransferDto } from './dto/create-external-transfer.dto';
 import { UpdateExternalTransferDto } from './dto/update-external-transfer.dto';
-import { AuthorizationService } from '../transfer/authorization.service';
+import { AuthorizationService } from '../../shared/authorization/authorization.service';
 import { AccountService } from '../account/account.service';
 import { ExternalTransferRepository } from './external-transfer.repository';
 

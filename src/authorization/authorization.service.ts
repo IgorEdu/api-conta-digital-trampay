@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { Injectable, Logger } from '@nestjs/common';
-import { CreateTransferDto } from './dto/create-transfer.dto';
-import { CreateExternalTransferDto } from 'src/external-transfer/dto/create-external-transfer.dto';
+import { CreateTransferDto } from 'src/modules/transfer/dto/create-transfer.dto';
+import { CreateExternalTransferDto } from 'src/modules/external-transfer/dto/create-external-transfer.dto';
 
 interface AuthorizationResponse {
   status: string;

@@ -1,8 +1,8 @@
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateTransferDto } from './dto/create-transfer.dto';
 import { TransferRepository } from './transfer.repository';
+import { AuthorizationService } from '../../shared/authorization/authorization.service';
 import { AccountService } from '../account/account.service';
-import { AuthorizationService } from './authorization.service';
 
 @Injectable()
 export class TransferService {

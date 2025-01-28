@@ -4,8 +4,8 @@ import { Transfer } from './transfer.entity';
 import { TransferRepository } from './transfer.repository';
 import { TransferService } from './transfer.service';
 import { TransferController } from './transfer.controller';
-import { AccountModule } from '../account/account.module'; 
-import { AuthorizationService } from './authorization.service';
+import { AccountModule } from '../account/account.module';
+import { AuthorizationService } from '../../shared/authorization/authorization.service';
 
 
 @Module({

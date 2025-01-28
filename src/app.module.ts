@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DbConfigService } from './infra/config/db.config.service';
+import { DbConfigService } from './config/db.config.service';
 import { ConfigModule } from '@nestjs/config';
-import { AccountModule } from './account/account.module';
-import { TransferModule } from './transfer/transfer.module';
-import { ExternalTransferModule } from './external-transfer/external-transfer.module';
+import { AccountModule } from './modules/account/account.module';
+import { TransferModule } from './modules/transfer/transfer.module';
+import { ExternalTransferModule } from './modules/external-transfer/external-transfer.module';
 
 @Module({
   imports: [
