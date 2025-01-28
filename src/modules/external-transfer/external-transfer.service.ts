@@ -45,33 +45,13 @@ export class ExternalTransferService {
       throw new BadRequestException('Saldo insuficiente');
     }
 
-    const authorized = await this.authorizationService.authorize(createExternalTransferDto);
-    if (!authorized) {
-      throw new ForbiddenException('Transferência não autorizada');
-    }
+    // const authorized = await this.authorizationService.authorize(createExternalTransferDto);
+    // if (!authorized) {
+    //   throw new ForbiddenException('Transferência não autorizada');
+    // }
 
     if (!this.externalTransferRepository.executePayment(createExternalTransferDto)) {
       throw new BadRequestException('Erro ao registrar transferência');
     }
-  }
-
-  create(createExternalTransferDto: CreateExternalTransferDto) {
-    return 'This action adds a new externalTransfer';
-  }
-
-  findAll() {
-    return `This action returns all externalTransfer`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} externalTransfer`;
-  }
-
-  update(id: number, updateExternalTransferDto: UpdateExternalTransferDto) {
-    return `This action updates a #${id} externalTransfer`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} externalTransfer`;
   }
 }

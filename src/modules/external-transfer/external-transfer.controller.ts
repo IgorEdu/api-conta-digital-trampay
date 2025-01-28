@@ -22,19 +22,4 @@ export class ExternalTransferController {
     const externalTransfer = await this.externalTransferService.pay(createExternalTransferDto);
     return plainToInstance(ExternalTransferDto, externalTransfer);
   }
-
-  @Get()
-  findAll() {
-    return this.externalTransferService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.externalTransferService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateExternalTransferDto: UpdateExternalTransferDto) {
-    return this.externalTransferService.update(+id, updateExternalTransferDto);
-  }
 }
