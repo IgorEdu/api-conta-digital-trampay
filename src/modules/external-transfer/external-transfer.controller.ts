@@ -4,7 +4,9 @@ import { CreateExternalTransferDto } from './dto/create-external-transfer.dto';
 import { UpdateExternalTransferDto } from './dto/update-external-transfer.dto';
 import { plainToInstance } from 'class-transformer';
 import { ExternalTransferDto } from './dto/external-transfer.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Transferência Externa')
 @Controller('external-transfer')
 export class ExternalTransferController {
   constructor(private readonly externalTransferService: ExternalTransferService) {}

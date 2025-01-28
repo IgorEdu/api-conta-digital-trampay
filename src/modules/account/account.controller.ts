@@ -3,7 +3,9 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestj
 import { CreateAccountDto } from './dto/create-account.dto';
 import { AccountDto } from './dto/account.dto';
 import { AccountService } from './account.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Conta')
 @Controller('account')
 export class AccountController {
   constructor(private accountService: AccountService) {}
