@@ -1,105 +1,162 @@
-name: Docker
+# name: Docker
 
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
+# # This workflow uses actions that are not certified by GitHub.
+# # They are provided by a third-party and are governed by
+# # separate terms of service, privacy policy, and support
+# # documentation.
 
+# on:
+#   push:
+#     branches: [ "main" ]
+#     # Publish semver tags as releases.
+#     tags: [ 'v*.*.*' ]
+#   pull_request:
+#     branches: [ "main" ]
+
+# env:
+#   # Use docker.io for Docker Hub if empty
+#   #REGISTRY: ghcr.io
+#   REGISTRY: gcr.io
+#   PROJETC_ID: trampay-nestjs-api
+#   IMAGE_NAME: nest-api/nest
+
+#   # github.repository as <account>/<repo>
+#   # IMAGE_NAME: ${{ github.repository }}
+
+
+# jobs:
+#   build:
+
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: read
+#       packages: write
+#       # This is used to complete the identity challenge
+#       # with sigstore/fulcio when running outside of PRs.
+#       id-token: write
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       # Install the cosign tool except on PR
+#       # https://github.com/sigstore/cosign-installer
+#       - name: Install cosign
+#         if: github.event_name != 'pull_request'
+#         uses: sigstore/cosign-installer@59acb6260d9c0ba8f4a2f9d9b48431a222b68e20 #v3.5.0
+#         with:
+#           cosign-release: 'v2.2.4'
+
+#       # Set up BuildKit Docker container builder to be able to build
+#       # multi-platform images and export cache
+#       # https://github.com/docker/setup-buildx-action
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
+
+#       # Login against a Docker registry except on PR
+#       # https://github.com/docker/login-action
+#       - name: Log into registry ${{ env.REGISTRY }}
+#         if: github.event_name != 'pull_request'
+
+#         uses: google-github-actions/auth@v1
+#         with:
+#           service_account_key: ${{ secrets.GCP_SA_KEY }}
+#           project_id: ${{ env.PROJETC_ID }}
+#           export_credentials: true
+#         # uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+#         # with:
+#         #   registry: ${{ env.REGISTRY }}
+#         #   # username: ${{ github.actor }}
+#         #   username: _json_key
+#         #   password: ${{ secrets.GCP_SA_KEY }}
+#         #   # password: ${{ secrets.GITHUB_TOKEN }}
+
+#       # Extract metadata (tags, labels) for Docker
+#       # https://github.com/docker/metadata-action
+#       - name: Extract Docker metadata
+#         id: meta
+#         uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
+#         with:
+#           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+#       # Build and push Docker image with Buildx (don't push on PR)
+#       # https://github.com/docker/build-push-action
+#       - name: Build and push Docker image
+#         id: build-and-push
+#         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+#         with:
+#           context: .
+#           push: ${{ github.event_name != 'pull_request' }}
+#           tags: ${{ steps.meta.outputs.tags }}
+#           labels: ${{ steps.meta.outputs.labels }}
+#           cache-from: type=gha
+#           cache-to: type=gha,mode=max
+
+#       # Sign the resulting Docker image digest except on PRs.
+#       # This will only write to the public Rekor transparency log when the Docker
+#       # repository is public to avoid leaking data.  If you would like to publish
+#       # transparency data even for private images, pass --force to cosign below.
+#       # https://github.com/sigstore/cosign
+#       - name: Sign the published Docker image
+#         if: ${{ github.event_name != 'pull_request' }}
+#         env:
+#           # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
+#           TAGS: ${{ steps.meta.outputs.tags }}
+#           DIGEST: ${{ steps.build-and-push.outputs.digest }}
+#         # This step uses the identity token to provision an ephemeral certificate
+#         # against the sigstore community Fulcio instance.
+#         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+
+---
+name: Build and Push Python Image to Google Cloud Platform
 on:
   push:
-    branches: [ "main" ]
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
-  pull_request:
-    branches: [ "main" ]
-
-env:
-  # Use docker.io for Docker Hub if empty
-  #REGISTRY: ghcr.io
-  REGISTRY: gcr.io
-  IMAGE_NAME: trampay-nestjs-api/nest-api
-
-  # github.repository as <account>/<repo>
-  # IMAGE_NAME: ${{ github.repository }}
-
-
+    branches: [ main ]
 jobs:
-  build:
-
+  build-push-gcr:
+    name: Build and Push to GCP
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      # This is used to complete the identity challenge
-      # with sigstore/fulcio when running outside of PRs.
-      id-token: write
-
+    env:
+      PROJETC_ID: trampay-nestjs-api
+      IMAGE_NAME: nest-api/nest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v2
 
-      # Install the cosign tool except on PR
-      # https://github.com/sigstore/cosign-installer
-      - name: Install cosign
-        if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@59acb6260d9c0ba8f4a2f9d9b48431a222b68e20 #v3.5.0
-        with:
-          cosign-release: 'v2.2.4'
+    - uses: google-github-actions/setup-gcloud@master
+      with:
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        project_id: ${{ env.PROJECT_ID }}
+        export_default_credentials: true
 
-      # Set up BuildKit Docker container builder to be able to build
-      # multi-platform images and export cache
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
+    - name: Build Docker Image
+      run: docker build -t $IMAGE_NAME:latest .
 
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+    - name: Automatic Tagging of Releases
+      id: increment-git-tag
+      run: |
+        bash ./scripts/git_update.sh -v major
 
-        uses: google-github-actions/auth@v1
-        with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
-        # uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
-        # with:
-        #   registry: ${{ env.REGISTRY }}
-        #   # username: ${{ github.actor }}
-        #   username: _json_key
-        #   password: ${{ secrets.GCP_SA_KEY }}
-        #   # password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Configure Docker Client
+      run: |-
+        gcloud auth configure-docker --quiet
+        gcloud auth configure-docker us-west2-docker.pkg.dev --quiet
 
-      # Extract metadata (tags, labels) for Docker
-      # https://github.com/docker/metadata-action
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+    - name: Push Docker Image to Container Registry (GCR)
+      env:
+        GIT_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
+      run: |-
+        docker tag $IMAGE_NAME:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
+        docker tag $IMAGE_NAME:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
+        docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
+        docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        id: build-and-push
-        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
-        with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      # Sign the resulting Docker image digest except on PRs.
-      # This will only write to the public Rekor transparency log when the Docker
-      # repository is public to avoid leaking data.  If you would like to publish
-      # transparency data even for private images, pass --force to cosign below.
-      # https://github.com/sigstore/cosign
-      - name: Sign the published Docker image
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
-          TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        # This step uses the identity token to provision an ephemeral certificate
-        # against the sigstore community Fulcio instance.
-        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+    - name: Push Docker Image to Artifact Registry
+      env:
+        GIT_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
+      run: |-
+        docker tag $IMAGE_NAME:latest us-west2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:latest
+        docker tag $IMAGE_NAME:latest us-west2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:$GIT_TAG
+        docker push us-west2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:latest
+        docker push us-west2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:$GIT_TAG
