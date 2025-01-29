@@ -20,7 +20,7 @@ env:
   IMAGE_NAME: trampay-nestjs-api/nest
 
   # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
+  # IMAGE_NAME: ${{ github.repository }}
 
 
 jobs:
