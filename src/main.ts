@@ -17,6 +17,7 @@ async function bootstrap() {
       'O sistema de conta digital da Trampay é um serviço web para gerenciar de forma eficiente e segura as finanças dos usuários, permitindo o controle de saldo, consulta de extratos e registro de movimentações financeiras. Ele abrange tanto transações internas, realizadas entre contas dentro do próprio sistema, quanto transações externas, realizadas por meio da integração com serviços de parceiros bancários. ',
     )
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);

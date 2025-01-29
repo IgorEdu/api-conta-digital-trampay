@@ -88,4 +88,10 @@ export class AccountService {
     account.balance = Number(account.balance) + amount;
     await this.updateAccount(account, manager);
   }
+
+  async getAccountByUserId(userId: string){
+    return await this.accountRepository.findOne({
+      where: [{ userId }],
+    });
+  }
 } 

@@ -1,7 +1,6 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateTransferDto } from './dto/create-transfer.dto';
 import { TransferRepository } from './transfer.repository';
-import { AuthorizationService } from '../../shared/authorization/authorization.service';
 import { AccountService } from '../account/account.service';
 
 @Injectable()
@@ -9,12 +8,21 @@ export class TransferService {
   // private readonly logger = new Logger(TransfersService.name);
 
   constructor(
-    private readonly authorizationService: AuthorizationService,
     private readonly transferRepository: TransferRepository,
     private readonly accountService: AccountService,
   ) {}
 
-  async transfer(dto: CreateTransferDto): Promise<void> {
+  async transfer(dto: CreateTransferDto, jwtToken: string): Promise<void> {
+    // const authorized = await this.authorizationService.validateJwt(jwtToken);
+
+    // if (!jwtToken || !jwtToken.startsWith('Bearer ')) {
+    //   throw new UnauthorizedException('JWT token is missing or malformed');
+    // }
+
+    // if (!authorized) {
+    //   throw new UnauthorizedException('Token não permitido. Transferência não autorizadas');
+    // }
+
     const accountSender = await this.accountService.getAccount(dto.accountSender);
     if (!accountSender) {
       throw new BadRequestException('Conta de envio não encontrada');
@@ -22,11 +30,6 @@ export class TransferService {
     
     if (accountSender.balance < Number(dto.amount)) {
       throw new BadRequestException('Saldo insuficiente');
-    }
-
-    const authorized = await this.authorizationService.authorize(dto);
-    if (!authorized) {
-      throw new ForbiddenException('Transferência não autorizadas');
     }
 
     if (!this.transferRepository.executeTransfer(dto)) {

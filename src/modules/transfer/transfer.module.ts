@@ -5,12 +5,12 @@ import { TransferRepository } from './transfer.repository';
 import { TransferService } from './transfer.service';
 import { TransferController } from './transfer.controller';
 import { AccountModule } from '../account/account.module';
-import { AuthorizationService } from '../../shared/authorization/authorization.service';
+import { MockAuthorizationService } from 'src/authorization/mock-authorization.service';
 
 
 @Module({
   imports: [TypeOrmModule.forFeature([Transfer]), AccountModule],
-  providers: [TransferRepository, TransferService, AuthorizationService],
+  providers: [TransferRepository, TransferService, MockAuthorizationService],
   exports: [TransferService],
   controllers: [TransferController],
 })
