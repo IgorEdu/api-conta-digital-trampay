@@ -14,7 +14,8 @@ const dataSourceOptions: DataSourceOptions = {
   logger: 'file',
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['src/migrations/**/*.ts'],
-  subscribers: ['src/subscriber/**/*.ts']
+  subscribers: ['src/subscriber/**/*.ts'],
+  ssl: { rejectUnauthorized: false }
 };
 
 const dataSource = new DataSource(dataSourceOptions);
