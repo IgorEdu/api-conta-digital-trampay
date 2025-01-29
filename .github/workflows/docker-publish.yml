@@ -137,12 +137,14 @@ jobs:
       id: generate-tag
       run: echo "GIT_TAG=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
 
-    - name: Configure Docker Client for GCR
-      run: gcloud auth configure-docker gcr.io --quiet
+    - name: Configure Docker Client for Artifact Registry
+      run: gcloud auth configure-docker LOCATION-docker.pkg.dev --quiet
 
-    - name: Push Docker Image to Google Container Registry (GCR)
+
+    - name: Push Docker Image to Artifact Registry
       run: |-
-        docker tag ${{ env.IMAGE_NAME }}:latest gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest
-        docker tag ${{ env.IMAGE_NAME }}:latest gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:$GIT_TAG
-        docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest
-        docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:$GIT_TAG
+        docker tag ${{ env.IMAGE_NAME }}:latest LOCATION-docker.pkg.dev/${{ env.PROJECT_ID }}/nestjs-api-repo/${{ env.IMAGE_NAME }}:latest
+        docker tag ${{ env.IMAGE_NAME }}:latest LOCATION-docker.pkg.dev/${{ env.PROJECT_ID }}/nestjs-api-repo/${{ env.IMAGE_NAME }}:$GIT_TAG
+        docker push LOCATION-docker.pkg.dev/${{ env.PROJECT_ID }}/nestjs-api-repo/${{ env.IMAGE_NAME }}:latest
+        docker push LOCATION-docker.pkg.dev/${{ env.PROJECT_ID }}/nestjs-api-repo/${{ env.IMAGE_NAME }}:$GIT_TAG
+
