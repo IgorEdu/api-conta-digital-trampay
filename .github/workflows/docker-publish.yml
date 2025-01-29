@@ -120,7 +120,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PROJECT_ID: trampay-nestjs-api
-      IMAGE_NAME: nest-api/nest
+      IMAGE_NAME: nest-api
 
     steps:
     - name: Checkout
