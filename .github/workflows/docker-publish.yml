@@ -56,13 +56,17 @@ jobs:
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+        
+        uses: google-github-actions/auth@v1
         with:
-          registry: ${{ env.REGISTRY }}
-          # username: ${{ github.actor }}
-          username: _json_key
-          password: ${{ secrets.GCP_SA_KEY }}
-          # password: ${{ secrets.GITHUB_TOKEN }}
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+        # uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+        # with:
+        #   registry: ${{ env.REGISTRY }}
+        #   # username: ${{ github.actor }}
+        #   username: _json_key
+        #   password: ${{ secrets.GCP_SA_KEY }}
+        #   # password: ${{ secrets.GITHUB_TOKEN }}
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
