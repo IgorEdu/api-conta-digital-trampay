@@ -120,6 +120,7 @@ jobs:
     env:
       PROJECT_ID: trampay-nestjs-api
       IMAGE_NAME: nest-api  
+      LOCATION: us
       
     steps:
     - name: Checkout
