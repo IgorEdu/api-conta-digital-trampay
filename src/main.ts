@@ -10,6 +10,7 @@ async function bootstrap() {
   }
 
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('API de conta digital - Trampay')
