@@ -5,6 +5,7 @@ import { AccountDto } from './dto/account.dto';
 import { AccountService } from './account.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { Public } from 'src/auth/constants/constant';
 
 @ApiTags('Conta')
 @Controller('account')
@@ -13,6 +14,7 @@ export class AccountController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @Public()
   async register(@Body() dto: CreateAccountDto): Promise<AccountDto> {
     const account = await this.accountService.registerAccount(dto);
     return plainToInstance(AccountDto, account);
