@@ -11,13 +11,13 @@ export class AuthService{
     
     async signIn(userId: string): Promise<any>{
         if(!userId || userId == null){
-            throw new UnauthorizedException();
+            throw new UnauthorizedException('Obrigatório o envio do ID do usuário');
         }
 
         const account = await this.accountService.getAccountByUserId(userId);
 
         if(!account){
-            throw new UnauthorizedException();
+            throw new UnauthorizedException('Conta não existente');
         }
 
         const paylod = { userId: account.userId};
